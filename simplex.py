@@ -53,7 +53,7 @@ class simplex:
         print("Phase 1")
         pos_fst = col_perm = -1
 
-        for x in range(1, len(inp)):
+        for x in range(2, len(inp)):
             if inp[x][1] < 0:
                 print("Found: " + str(inp[x][1]))
                 pos_fst = x
@@ -80,9 +80,9 @@ class simplex:
         # Find the row for the feasible region
         mnr = float("inf")
         mnr_row = -1
-        for x in range(1, len(inp)):
+        for x in range(2, len(inp)):
             if (inp[x][1]<0) != (inp[x][col_perm]<0): continue
-            quo = inp[x][1]/inp[x][col_perm]
+            quo = inp[x][1]/inp[x][col_perm] if inp[x][col_perm] > 0 else float("inf")
             if quo <= mnr:
                 mnr = quo
                 mnr_row = x
@@ -152,6 +152,7 @@ class simplex:
 
     def phase_2(inp):
         print("phase 2 --")
+        col_perm = -1
         pos_fst = -1
         for y in range(2, len(inp[0])):
             if inp[1][y] > 0:
@@ -161,6 +162,9 @@ class simplex:
 
         # There is no positive variable for the function row, what characterizes an optimal solution
         if pos_fst == -1:
+            print ("Optimal")
+            if inp[1][1] < 0: inp[1][1] *=-1
+            simplex.printTable(inp)
             return -2
 
         for y in range(2, len(inp[pos_fst])):
@@ -180,7 +184,7 @@ class simplex:
         mnr_row = -1
         for x in range(1, len(inp)):
             if (inp[x][1]<0) != (inp[x][col_perm]<0): continue
-            quo = inp[x][1]/inp[x][col_perm]
+            quo = inp[x][1]/inp[x][col_perm] if inp[x][col_perm] > 0 else float("inf")
             if quo <= mnr:
                 mnr = quo
                 mnr_row = x
@@ -199,6 +203,7 @@ class simplex:
         #input()
         return 0
         #return 0
+
 
     def execute(stn):
         rt = 0
@@ -243,6 +248,19 @@ def test01():
 
     #simplex.printTable(rt)
 
+#inp[x][1]/inp[x][col_perm] if inp[x][col_perm] > 0 else float("inf")
+def test03():
+    #Numero 1 da lista de simplex
+    f = ["max", 14, 22]
+    r1 = [2, 4, "<=", 250]
+    r2 = [5, 8, ">=", 460]
+    r3 = [1, 0, "<=", 40]
+
+    table = [f,r1,r2,r3]
+    simplex.reset()
+    stn = simplex.standardize(table)
+    simplex.printTable(stn)
+    simplex.execute(stn)
 
 def test02():
     #Numero 1 da lista de simplex
@@ -257,4 +275,4 @@ def test02():
     simplex.printTable(stn)
     simplex.execute(stn)
 
-test02()
+test03()
