@@ -3,6 +3,9 @@ import copy
 
 class simplex:
     cntfolg = 1
+    def reset():
+        simplex.cntfolg = 1
+
     def standardize_r(inp):
         pos = 1
         newfrm = []
@@ -167,41 +170,50 @@ class simplex:
 #f = ["max",1,2]
 #simplex.standardize_f(f)
 
-"""
-f = ["min", 7, 8.5]
-r1 = [0.6, 0.8, ">=", 16]
-r2 = [24, 20, "<=", 1800]
 
-table = [f,r1,r2]
-stn = simplex.standardize(table)
-simplex.printTable(stn)
-rt = 0
-while rt == 0:
-    rt = simplex.phase_1(stn)
+###TESTS
 
-rt = 0
-while rt == 0:
-    rt = simplex.phase_2(stn)
+def test01():
+    #numero 3 da lista de simplex
+    f = ["min", 7, 8.5]
+    r1 = [0.6, 0.8, ">=", 16]
+    r2 = [24, 20, "<=", 1800]
 
-#simplex.printTable(rt)
-"""
+    table = [f,r1,r2]
+    simplex.reset()
+    stn = simplex.standardize(table)
+    simplex.printTable(stn)
+    rt = 0
+    while rt == 0:
+        rt = simplex.phase_1(stn)
 
-
-f = ["min", 1, 2]
-r1 = [8, 2, ">=", 16]
-r2 = [1, 1, "<=", 6]
-r3 = [2, 7, ">=", 28]
-
-table = [f,r1,r2,r3]
-stn = simplex.standardize(table)
-simplex.printTable(stn)
-rt = 0
-while rt == 0:
-    rt = simplex.phase_1(stn)
-
-if rt == -1:
-    print("DONE")
-else:
     rt = 0
     while rt == 0:
         rt = simplex.phase_2(stn)
+
+    #simplex.printTable(rt)
+
+
+def test02():
+    #Numero 1 da lista de simplex
+    f = ["min", 1, 2]
+    r1 = [8, 2, ">=", 16]
+    r2 = [1, 1, "<=", 6]
+    r3 = [2, 7, ">=", 28]
+
+    table = [f,r1,r2,r3]
+    simplex.reset()
+    stn = simplex.standardize(table)
+    simplex.printTable(stn)
+    rt = 0
+    while rt == 0:
+        rt = simplex.phase_1(stn)
+
+    if rt == -1:
+        print("DONE")
+    else:
+        rt = 0
+        while rt == 0:
+            rt = simplex.phase_2(stn)
+
+test02()
