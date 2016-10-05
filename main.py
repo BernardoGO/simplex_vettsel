@@ -1,17 +1,19 @@
 class simplex:
     def standardize(inp):
-        pos = -1
+        pos = 1
+        newfrm = []
         for x in range(len(inp)):
             if isinstance(inp[x], str):
-                pos = x
-                if '>' in inp[x]:
-                    inp[x] = -1
-                elif '<' in inp[x]:
-                    inp[x] = 1
+                if '>' in inp[x]: pos = -1
+                newfrm.extend([1,inp[x+1]*pos])
+                for y in range(len(inp)-1):
+                    if y == x: continue
+                    newfrm.append(inp[y]*pos)
                 break
-        print (inp)
+        print (newfrm)
 
 
 
 
-r1 =[1,1,'>=',2]
+r1 =[8,2,'>=',16]
+simplex.standardize(r1)
