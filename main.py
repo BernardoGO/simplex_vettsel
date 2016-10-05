@@ -1,5 +1,5 @@
 class simplex:
-    def standardize(inp):
+    def standardize_r(inp):
         pos = 1
         newfrm = []
         for x in range(len(inp)):
@@ -12,8 +12,18 @@ class simplex:
                 break
         print (newfrm)
 
+    def standardize_f(inp):
+        pos = 1
+        newfrm = [0]
+        if inp[0] == "min": pos = -1
+        for x in range(1,len(inp)):
+            newfrm.append(inp[x]*pos)
+        print (newfrm)
 
 
 
 r1 =[8,2,'>=',16]
-simplex.standardize(r1)
+simplex.standardize_r(r1)
+
+f = ["max",1,2]
+simplex.standardize_f(f)
