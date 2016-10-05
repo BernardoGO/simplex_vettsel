@@ -170,7 +170,7 @@ class simplex:
 #f = ["max",1,2]
 #simplex.standardize_f(f)
 
-
+"""
 f = ["min", 7, 8.5]
 r1 = [0.6, 0.8, ">=", 16]
 r2 = [24, 20, "<=", 1800]
@@ -187,3 +187,21 @@ while rt == 0:
     rt = simplex.phase_2(stn)
 
 #simplex.printTable(rt)
+"""
+
+
+f = ["min", 1, 2]
+r1 = [8, 2, ">=", 16]
+r2 = [1, 1, "<=", 6]
+r3 = [2, 7, ">=", 28]
+
+table = [f,r1,r2,r3]
+stn = simplex.standardize(table)
+simplex.printTable(stn)
+rt = 0
+while rt == 0:
+    rt = simplex.phase_1(stn)
+
+rt = 0
+while rt == 0:
+    rt = simplex.phase_2(stn)
