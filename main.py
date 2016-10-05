@@ -29,9 +29,7 @@ class simplex:
         fp = simplex.standardize_f(inp[0])
         sd = (["vnb", "ml"])
         sd.extend(x+1 for x in range(len(fp)-2))
-        newtable = []
-        newtable.append(sd)
-        newtable.append(fp)
+        newtable = [sd,fp]
         for x in range(1, len(inp)):
             newtable.append(simplex.standardize_r(inp[x]))
         return newtable
@@ -42,8 +40,7 @@ class simplex:
 
     def phase_1(inp):
         print("Phase 1")
-        pos_fst = -1
-        col_perm = -1
+        pos_fst = col_perm = -1
         for x in range(1, len(inp)):
             if inp[x][1] < 0:
                 print("Found: " + str(inp[x][1]))
@@ -202,6 +199,9 @@ rt = 0
 while rt == 0:
     rt = simplex.phase_1(stn)
 
-rt = 0
-while rt == 0:
-    rt = simplex.phase_2(stn)
+if rt == -1:
+    print("DONE")
+else:
+    rt = 0
+    while rt == 0:
+        rt = simplex.phase_2(stn)
