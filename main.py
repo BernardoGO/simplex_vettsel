@@ -50,6 +50,10 @@ class simplex:
                 pos_fst = x
                 break
 
+        if pos_fst == -1:
+            print ("TO PHASE 2")
+            return -2
+
         for y in range(2, len(inp[pos_fst])):
             #print(inp[x][y])
             if inp[pos_fst][y] < 0:
@@ -70,8 +74,11 @@ class simplex:
                 mnr = quo
                 mnr_row = x
         print (mnr_row)
-        rt = simplex.troca(inp, mnr_row, col_perm)
-        return rt
+        ew = simplex.troca(inp, mnr_row, col_perm)
+        for x in range(1, len(inp)):
+            for y in range(1, len(inp[0])):
+                inp[x][y] = ew[x][y] * ew[x][y]
+        return 0
 
     def troca(inp, mnr_row, mnr_col):
         newtbl = copy.deepcopy(inp)
@@ -83,6 +90,26 @@ class simplex:
         for x in range(1, len(inp[0])):
             if x == mnr_col: continue
             newtbl[mnr_row][x] = newtbl[mnr_row][x] * (1*elemnpr)
+
+        for x in range(1, len(inp)):
+            for y in range(1, len(inp[0])):
+                if y == mnr_row: continue
+                if x == mnr_col: continue
+                newtbl[x][y] = inp[mnr_row][y] * newtbl[x][mnr_row]
+        simplex.printTable(newtbl)
+
+        xi = newtbl[mnr_row][0]
+        yi = newtbl[0][mnr_row]
+        newtbl[mnr_row][0] = yi
+        newtbl[0][mnr_row] = xi
+        for x in range(1, len(inp)):
+            for y in range(1, len(inp[0])):
+                if y == mnr_row: continue
+                if x == mnr_col: continue
+                newtbl[x][y] += inp[x][y]
+        simplex.printTable(newtbl)
+        simplex.printTable(newtbl)
+
         return newtbl
 
 
@@ -100,6 +127,7 @@ r2 = [24, 20, "<=", 1800]
 table = [f,r1,r2]
 stn = simplex.standardize(table)
 simplex.printTable(stn)
-
-rt = simplex.phase_1(stn)
-simplex.printTable(rt)
+rt = 0
+while rt == 0:
+    rt = simplex.phase_1(stn)
+#simplex.printTable(rt)
