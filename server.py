@@ -12,13 +12,12 @@ def home():
 def simplex():
     content = request.json
 
-    f = ["min", 1, 2]
-    r1 = [8, 2, ">=", 16]
-    r2 = [1, 1, "<=", 6]
-    r3 = [2, 7, ">=", 28]
+    table = []
+
+    for i in content['data']:
+        table.append(i)
 
     simplex = Simplex()
-    table = [f,r1,r2, r3]
     stn = simplex.standardize(table)
     simplex_result = simplex.execute(stn)
 
