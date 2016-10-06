@@ -1,15 +1,26 @@
 import sys
 import copy
+from enum import Enum
 
-class simplex:
+class Result(Enum):
+    optimal = 1
+    infeasible = 2
+    unbounded = 3
+    multi = 4
+
+
+class Simplex(object):
     cntfolg = 1
 
+    def __init__(self):
+        self.reset()
+
     #Reset Variables
-    def reset():
-        simplex.cntfolg = 1
+    def reset(self):
+        self.cntfolg = 1
 
     #Transform a restriction into one in the standard form
-    def standardize_r(inp):
+    def standardize_r(self, inp):
         pos = 1
         newfrm = []
         for x in range(len(inp)):
@@ -17,8 +28,8 @@ class simplex:
 
                 # Introducing new variables
                 if '>' in inp[x]: pos = -1
-                newfrm.extend([simplex.cntfolg+2,inp[x+1]*pos])
-                simplex.cntfolg+=1
+                newfrm.extend([self.cntfolg+2,inp[x+1]*pos])
+                self.cntfolg+=1
 
                 for y in range(len(inp)-1):
                     if y == x: continue
@@ -27,7 +38,7 @@ class simplex:
         return newfrm
 
     #Transform the objective function into one in the standard form
-    def standardize_f(inp):
+    def standardize_f(self, inp):
         pos = 1
         newfrm = ["f", 0]
         if inp[0] == "min": pos = -1
@@ -36,20 +47,20 @@ class simplex:
         return newfrm
 
     #Transform the linear program to one in standard form
-    def standardize(inp):
-        fp = simplex.standardize_f(inp[0])
+    def standardize(self, inp):
+        fp = self.standardize_f(inp[0])
         sd = (["vnb", "ml"])
         sd.extend(x+1 for x in range(len(fp)-2))
         newtable = [sd,fp]
         for x in range(1, len(inp)):
-            newtable.append(simplex.standardize_r(inp[x]))
+            newtable.append(self.standardize_r(inp[x]))
         return newtable
 
-    def printTable(inp):
+    def print_table(self, inp):
         for x in inp:
             print(x)
 
-    def phase_1(inp):
+    def phase_1(self, inp):
         print("Phase 1")
         pos_fst = col_perm = -1
 
@@ -66,7 +77,6 @@ class simplex:
 
         # Find the column for the feasible region
         for y in range(2, len(inp[pos_fst])):
-            #print(inp[x][y])
             if inp[pos_fst][y] < 0:
                 print("Found_2: " + str(inp[pos_fst][y]))
                 col_perm = y
@@ -88,17 +98,17 @@ class simplex:
                 mnr_row = x
         print (mnr_row)
 
-        ew = simplex.troca(inp, mnr_row, col_perm)
+        ew = self.troca(inp, mnr_row, col_perm)
 
         # Replace old values for the new values
         for x in range(0, len(inp)):
             for y in range(0, len(inp[0])):
                 inp[x][y] = ew[x][y]
 
-        simplex.printTable(inp)
+        self.print_table(inp)
         return 0
 
-    def troca(inp, mnr_row, mnr_col):
+    def troca(self, inp, mnr_row, mnr_col):
 
         newtbl = copy.deepcopy(inp)
 
@@ -106,19 +116,19 @@ class simplex:
         elemnpr = 1/newtbl[mnr_row][mnr_col]
         print("lempr = " + str(elemnpr))
         newtbl[mnr_row][mnr_col] = elemnpr;
-        simplex.printTable(newtbl)
+        self.print_table(newtbl)
 
         # Calculate new values for the feasible row
         for x in range(1, len(inp)):
             if x == mnr_row: continue
             newtbl[x][mnr_col] = newtbl[x][mnr_col] * (-1*elemnpr)
-        simplex.printTable(newtbl)
+        self.print_table(newtbl)
 
         # Calculate new values for the feasible column
         for x in range(1, len(inp[0])):
             if x == mnr_col: continue
             newtbl[mnr_row][x] = newtbl[mnr_row][x] * (1*elemnpr)
-        simplex.printTable(newtbl)
+        self.print_table(newtbl)
 
         # Calculate new values for the rest of the table
         for x in range(1, len(inp)):
@@ -133,9 +143,8 @@ class simplex:
         newtbl[mnr_row][0] = yi
         newtbl[0][mnr_col] = xi
 
-
         print("MULT222")
-        simplex.printTable(newtbl)
+        self.print_table(newtbl)
 
         # Calculate the sum for the new table
         for x in range(1, len(inp)):
@@ -145,12 +154,11 @@ class simplex:
                 newtbl[x][y] += inp[x][y]
 
         print("ODN2")
-        simplex.printTable(newtbl)
-        #simplex.printTable(newtbl)
+        self.print_table(newtbl)
 
         return newtbl
 
-    def phase_2(inp):
+    def phase_2(self, inp):
         print("phase 2 --")
         pos_fst = -1
         for y in range(2, len(inp[0])):
@@ -164,7 +172,6 @@ class simplex:
             return -2
 
         for y in range(2, len(inp[pos_fst])):
-            #print(inp[x][y])
             if inp[pos_fst][y] > 0:
                 print("Found_2: " + str(inp[y][pos_fst]) + "=" + str(pos_fst))
                 col_perm = pos_fst
@@ -173,7 +180,7 @@ class simplex:
         # There is no negative variable for the selected row, what characterizes an unfeasible solution
         if col_perm == -1:
             print ("Unbounded")
-            return -1
+            return -3
 
         # Find the row for the feasible region
         mnr = float("inf")
@@ -185,76 +192,41 @@ class simplex:
                 mnr = quo
                 mnr_row = x
         print (mnr_row)
-        simplex.printTable(inp)
-        #input()
+        self.print_table(inp)
         print("row = " + str(mnr_row) + " col = " + str(col_perm))
-        ew = simplex.troca(inp, mnr_row, col_perm)
+        ew = self.troca(inp, mnr_row, col_perm)
 
         #Replace values
         for x in range(0, len(inp)):
             for y in range(0, len(inp[0])):
                 inp[x][y] = ew[x][y]
-        simplex.printTable(inp)
+        self.print_table(inp)
 
-        #input()
         return 0
-        #return 0
 
-    def execute(stn):
+    def execute(self, stn):
         rt = 0
         while rt == 0:
-            rt = simplex.phase_1(stn)
+            rt = self.phase_1(stn)
+
+        # first fase results:
+        # -2 --> go phase2
+        # -1 --> Infeasible
 
         if rt == -1:
             print("DONE")
+            return { "status": Result.infeasible, "table": stn }
         else:
             rt = 0
             while rt == 0:
-                rt = simplex.phase_2(stn)
+                rt = self.phase_2(stn)
 
+        if rt == -3:
+            print("DONE")
+            return { "status": Result.unbounded, "table": stn }
 
-###TESTS
+        # first fase results:
+        # -2 --> Optimal
+        # -3 --> Unbounded
 
-
-#r1 =[8,2,'>=',16]
-#simplex.standardize_r(r1)
-
-#f = ["max",1,2]
-#simplex.standardize_f(f)
-
-
-def test01():
-    #numero 3 da lista de simplex
-    f = ["min", 7, 8.5]
-    r1 = [0.6, 0.8, ">=", 16]
-    r2 = [24, 20, "<=", 1800]
-
-    table = [f,r1,r2]
-    simplex.reset()
-    stn = simplex.standardize(table)
-    simplex.printTable(stn)
-    rt = 0
-    while rt == 0:
-        rt = simplex.phase_1(stn)
-
-    rt = 0
-    while rt == 0:
-        rt = simplex.phase_2(stn)
-
-    #simplex.printTable(rt)
-
-
-def test02():
-    #Numero 1 da lista de simplex
-    f = ["min", 1, 2]
-    r1 = [8, 2, ">=", 16]
-    r2 = [1, 1, "<=", 6]
-    r3 = [2, 7, ">=", 28]
-
-    table = [f,r1,r2,r3]
-    simplex.reset()
-    stn = simplex.standardize(table)
-    simplex.printTable(stn)
-    simplex.execute(stn)
-
-test02()
+        return { "status": Result.optimal, "table": stn }
