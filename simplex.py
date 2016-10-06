@@ -64,7 +64,7 @@ class Simplex(object):
         print("Phase 1")
         pos_fst = col_perm = -1
 
-        for x in range(1, len(inp)):
+        for x in range(2, len(inp)):
             if inp[x][1] < 0:
                 print("Found: " + str(inp[x][1]))
                 pos_fst = x
@@ -90,9 +90,9 @@ class Simplex(object):
         # Find the row for the feasible region
         mnr = float("inf")
         mnr_row = -1
-        for x in range(1, len(inp)):
+        for x in range(2, len(inp)):
             if (inp[x][1]<0) != (inp[x][col_perm]<0): continue
-            quo = inp[x][1]/inp[x][col_perm]
+            quo = inp[x][1]/inp[x][col_perm] if inp[x][col_perm] > 0 else float("inf")
             if quo <= mnr:
                 mnr = quo
                 mnr_row = x
@@ -160,6 +160,7 @@ class Simplex(object):
 
     def phase_2(self, inp):
         print("phase 2 --")
+        col_perm = -1
         pos_fst = -1
         for y in range(2, len(inp[0])):
             if inp[1][y] > 0:
@@ -169,6 +170,9 @@ class Simplex(object):
 
         # There is no positive variable for the function row, what characterizes an optimal solution
         if pos_fst == -1:
+            print ("Optimal")
+            if inp[1][1] < 0: inp[1][1] *=-1
+            self.print_table(inp)
             return -2
 
         for y in range(2, len(inp[pos_fst])):
@@ -187,7 +191,7 @@ class Simplex(object):
         mnr_row = -1
         for x in range(1, len(inp)):
             if (inp[x][1]<0) != (inp[x][col_perm]<0): continue
-            quo = inp[x][1]/inp[x][col_perm]
+            quo = inp[x][1]/inp[x][col_perm] if inp[x][col_perm] > 0 else float("inf")
             if quo <= mnr:
                 mnr = quo
                 mnr_row = x
@@ -206,6 +210,7 @@ class Simplex(object):
 
     def execute(self, stn):
         rt = 0
+
         while rt == 0:
             rt = self.phase_1(stn)
 
