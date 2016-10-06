@@ -1,5 +1,6 @@
 import sys
 import copy
+import json
 
 class simplex:
     cntfolg = 1
@@ -207,16 +208,39 @@ class simplex:
 
     def execute(stn):
         rt = 0
+        status = ''
         while rt == 0:
+
             rt = simplex.phase_1(stn)
 
         if rt == -1:
             print("DONE")
+            status = 'impossivel'
         else:
             rt = 0
             while rt == 0:
                 rt = simplex.phase_2(stn)
 
+        if rt == -2:
+            status = "otimo"
+        elif rt == -1:
+            status = "ilimitada"
+        return simplex.toJSON(stn, status)
+
+    def toJSON(inp, status):
+        dic = {}
+        dic['status'] = status
+        for x in inp:
+            if 'vnb' in x: continue
+            s = str(x[0]) if 'f' in str(x[0]) else 'x' + str(x[0])
+            dic[str(s)] = x[1]
+        for x in inp[0]:
+            if isinstance(x,str): continue
+            s = str(x) if 'f' in str(x) else 'x' + str(x)
+            dic[str(s)] = 0
+        xx = json.dumps(dic, sort_keys=True, indent=4, separators=(',', ': '))
+        print(xx)
+        return xx
 
 ###TESTS
 
@@ -273,6 +297,7 @@ def test02():
     simplex.reset()
     stn = simplex.standardize(table)
     simplex.printTable(stn)
-    simplex.execute(stn)
+    json = simplex.execute(stn)
+    #simplex.toJSON(stn)
 
-test03()
+test02()
