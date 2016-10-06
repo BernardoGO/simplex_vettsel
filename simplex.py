@@ -242,6 +242,13 @@ class simplex:
         print(xx)
         return xx
 
+    def prepareJSON(inp):
+        for x in inp:
+            for y in x:
+                if "r" in str(y) or "f" in str(y):
+                    print(y)
+                    x.remove(y)
+
 ###TESTS
 
 
@@ -300,4 +307,46 @@ def test02():
     json = simplex.execute(stn)
     #simplex.toJSON(stn)
 
-test02()
+def testJSON():
+
+    JSO = """
+    [
+        [
+            "f",
+            "min",
+            1,
+            2
+        ],
+        [
+            "r1",
+            8,
+            2,
+            ">=",
+            16
+        ],
+        [
+            "r2",
+            1,
+            1,
+            "<=",
+            6
+        ],
+        [
+            "r3",
+            2,
+            7,
+            ">=",
+            28
+        ]
+    ]
+    """
+    import json
+    table = json.loads(JSO)
+    simplex.prepareJSON(table)
+    simplex.reset()
+    stn = simplex.standardize(table)
+    simplex.printTable(stn)
+    json = simplex.execute(stn)
+
+
+testJSON()
