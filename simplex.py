@@ -83,6 +83,7 @@ class simplex:
         mnr_row = -1
         for x in range(2, len(inp)):
             if (inp[x][1]<0) != (inp[x][col_perm]<0): continue
+            if (inp[x][1]<=0) or (inp[x][col_perm]<=0): continue
             quo = inp[x][1]/inp[x][col_perm] if inp[x][col_perm] > 0 else float("inf")
             if quo <= mnr:
                 mnr = quo
@@ -185,6 +186,7 @@ class simplex:
         mnr_row = -1
         for x in range(1, len(inp)):
             if (inp[x][1]<0) != (inp[x][col_perm]<0): continue
+            if (inp[x][1]<=0) or (inp[x][col_perm]<=0): continue
             quo = inp[x][1]/inp[x][col_perm] if inp[x][col_perm] > 0 else float("inf")
             if quo <= mnr:
                 mnr = quo
@@ -307,6 +309,20 @@ def test02():
     json = simplex.execute(stn)
     #simplex.toJSON(stn)
 
+def test04():
+    #Numero 1 da lista de simplex
+    f = ["max", 5, 3.5]
+    r1 = [1.5, 1, "<=", 400]
+    r2 = [1, 0, "<=", 150]
+    r3 = [0, 1, "<=", 300]
+
+    table = [f,r1,r2,r3]
+    simplex.reset()
+    stn = simplex.standardize(table)
+    simplex.printTable(stn)
+    json = simplex.execute(stn)
+    #simplex.toJSON(stn)
+
 def testJSON():
 
     JSO = """
@@ -349,4 +365,5 @@ def testJSON():
     json = simplex.execute(stn)
 
 
-testJSON()
+#testJSON()
+test04()
