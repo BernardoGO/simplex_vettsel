@@ -77,6 +77,7 @@ class Simplex(object):
 
         # Find the column for the feasible region
         for y in range(2, len(inp[pos_fst])):
+            #print(inp[x][y])
             if inp[pos_fst][y] < 0:
                 print("Found_2: " + str(inp[pos_fst][y]))
                 col_perm = y
@@ -92,6 +93,7 @@ class Simplex(object):
         mnr_row = -1
         for x in range(2, len(inp)):
             if (inp[x][1]<0) != (inp[x][col_perm]<0): continue
+            if (inp[x][1]<=0) or (inp[x][col_perm]<=0): continue
             quo = inp[x][1]/inp[x][col_perm] if inp[x][col_perm] > 0 else float("inf")
             if quo <= mnr:
                 mnr = quo
@@ -143,6 +145,7 @@ class Simplex(object):
         newtbl[mnr_row][0] = yi
         newtbl[0][mnr_col] = xi
 
+
         print("MULT222")
         self.print_table(newtbl)
 
@@ -176,6 +179,7 @@ class Simplex(object):
             return -2
 
         for y in range(2, len(inp[pos_fst])):
+            #print(inp[x][y])
             if inp[pos_fst][y] > 0:
                 print("Found_2: " + str(inp[y][pos_fst]) + "=" + str(pos_fst))
                 col_perm = pos_fst
@@ -191,6 +195,7 @@ class Simplex(object):
         mnr_row = -1
         for x in range(1, len(inp)):
             if (inp[x][1]<0) != (inp[x][col_perm]<0): continue
+            if (inp[x][1]<=0) or (inp[x][col_perm]<=0): continue
             quo = inp[x][1]/inp[x][col_perm] if inp[x][col_perm] > 0 else float("inf")
             if quo <= mnr:
                 mnr = quo
@@ -206,11 +211,16 @@ class Simplex(object):
                 inp[x][y] = ew[x][y]
         self.print_table(inp)
 
+        #input()
         return 0
+        #return 0
 
     def execute(self, stn):
         rt = 0
 
+    def execute(stn):
+        rt = 0
+        status = ''
         while rt == 0:
             rt = self.phase_1(stn)
 
