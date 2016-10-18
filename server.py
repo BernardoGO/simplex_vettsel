@@ -1,6 +1,7 @@
 
 from flask import Flask, request, jsonify
 from simplex import Simplex, Result
+from json import dumps
 
 app = Flask(__name__)
 
@@ -44,7 +45,8 @@ def simplex():
     elif (simplex_result['status'] == Result.multi):
         status = "multiplas"
 
-    return jsonify({ "data": { "status": status, "result": result } })
+    return jsonify({ "data": { "status": status, "result": result, "table": simplex_result['table']} })
+    # return jsonify(dumps(simplex_result['table']))
 
 if __name__ == "__main__":
     app.run()
