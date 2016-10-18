@@ -46,7 +46,6 @@ def simplex():
         status = "multiplas"
 
     return jsonify({ "data": { "status": status, "result": result, "table": simplex_result['table']} })
-    # return jsonify(dumps(simplex_result['table']))
 
 if __name__ == "__main__":
     app.run()
