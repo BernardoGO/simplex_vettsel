@@ -85,12 +85,35 @@ class Test(unittest.TestCase):
                 [2, 20.00000000000001, -1.2499999999999998, 0.7499999999999999]]
 
         self.assertTrue(result['table'] == expected_result)
-        """
+        ###//////////////////////
         simplex.print_table(result["table"])
         x1 = result["table"][4][1]
         x2 = result["table"][2][1]
         res = result["table"][1][1]
-        print(res)
+        perm1 = result["table"][0][-1]-len(table)+2
+        perm2 = result["table"][0][-2]-len(table)+2
+        ss1 = simplex.standardize_r(table[perm1])
+        tt1 = (ss1[1]/ss1[3])*-1
+        pp1 = (ss1[2]/ss1[3])*-1
+
+        ss2 = simplex.standardize_r(table[perm2])
+        tt2 = (ss2[1]/ss2[3])*-1
+        pp2 = (ss2[2]/ss2[3])*-1
+
+        ttt = [pp2,pp1]
+        minc2 = (f[1]*-1)/min(ttt)
+        minc1 = min(ttt)*(f[2]*-1)
+
+        maxc2 = (f[1]*-1)/max(ttt)
+        maxc1 = max(ttt)*(f[2]*-1)
+
+        sens = [[minc1, maxc1], [minc2, maxc2]]
+        print(sens)
+
+        """
+        #print(result["sens"])
+
+
 
 
 if __name__ == '__main__':

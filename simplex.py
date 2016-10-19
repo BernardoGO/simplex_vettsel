@@ -47,7 +47,10 @@ class Simplex(object):
         return newfrm
 
     #Transform the linear program to one in standard form
+    table = []
     def standardize(self, inp):
+        global table
+        table = inp
         fp = self.standardize_f(inp[0])
         sd = (["vnb", "ml"])
         sd.extend(x+1 for x in range(len(fp)-2))
@@ -213,6 +216,42 @@ class Simplex(object):
         return 0
 
     def execute(self, stn):
+        self.reset()
+        global table
+        result = self.execute_simplex(stn)
+        if result["status"] == Result.optimal:
+
+            self.print_table(result["table"])
+            x1 = result["table"][4][1]
+            x2 = result["table"][2][1]
+            res = result["table"][1][1]
+            perm1 = result["table"][0][-1]-len(table)+2
+            perm2 = result["table"][0][-2]-len(table)+2
+
+            ss1 = self.standardize_r(table[perm1])
+            print("sseeeeeeeeeeeeeeee")
+            print(ss1)
+            print("------------------------")
+            tt1 = (ss1[1]/ss1[3])*-1
+            pp1 = (ss1[2]/ss1[3])*-1
+
+            ss2 = self.standardize_r(table[perm2])
+            tt2 = (ss2[1]/ss2[3])*-1
+            pp2 = (ss2[2]/ss2[3])*-1
+            f = table[0]
+            ttt = [pp2,pp1]
+            minc2 = (f[1]*-1)/min(ttt)
+            minc1 = min(ttt)*(f[2]*-1)
+
+            maxc2 = (f[1]*-1)/max(ttt)
+            maxc1 = max(ttt)*(f[2]*-1)
+
+            sens = [[minc1, maxc1], [minc2, maxc2]]
+            print(sens)
+        return result
+
+    def execute_simplex(self, stn):
+        table = copy.deepcopy(stn)
         rt = 0
         status = ''
         while rt == 0:
@@ -238,4 +277,5 @@ class Simplex(object):
         # -2 --> Optimal
         # -3 --> Unbounded
 
-        return { "status": Result.optimal, "table": stn }
+
+        return { "status": Result.optimal, "table": stn}
