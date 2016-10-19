@@ -55,6 +55,7 @@ class Test(unittest.TestCase):
 
         simplex = Simplex()
         table = [f,r1,r2]
+        simplex.reset()
         stn = simplex.standardize(table)
         result = simplex.execute(stn)
 
@@ -64,6 +65,33 @@ class Test(unittest.TestCase):
                 [2, 20.00000000000001, -1.2499999999999998, 0.7499999999999999]]
 
         self.assertTrue(result['table'] == expected_result)
+
+    def test_case_sens(self):
+        #sensibilidade
+        f = ["max", 40, 30]
+        r1 = [2/5, 1/2, "<=", 20]
+        r2 = [0, 1/5, "<=", 5]
+        r3 = [3/5, 3/10, "<=", 21]
+
+        simplex = Simplex()
+        table = [f,r1,r2,r3]
+        simplex.reset()
+        stn = simplex.standardize(table)
+        result = simplex.execute(stn)
+        """
+        expected_result = [['vnb', 'ml', 3, 1],
+                ['f', 170.00000000000003, -10.624999999999998, -0.6249999999999993],
+                [4, 1400.0, 25.0, 9.000000000000002],
+                [2, 20.00000000000001, -1.2499999999999998, 0.7499999999999999]]
+
+        self.assertTrue(result['table'] == expected_result)
+        """
+        simplex.print_table(result["table"])
+        x1 = result["table"][4][1]
+        x2 = result["table"][2][1]
+        res = result["table"][1][1]
+        print(res)
+
 
 if __name__ == '__main__':
     unittest.main()
