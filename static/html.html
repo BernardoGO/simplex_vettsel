@@ -15,13 +15,17 @@
             resize: both;
             overflow: auto;
         }
+
+        th {
+            padding: 5px;
+        }
     </style>
 
 
 
 </head>
 <body onload = "control();">
-SIMPLEXO
+
 <div id="demo">
 
     <button id = "calcbutton" type = "button">Calcular</button>
@@ -29,7 +33,7 @@ SIMPLEXO
 <form id="tabela">
 <div id = "campos">
 
-    <input id ="campoBase"  value=""> <br/>
+    <input id ="campoBase"  value="" placeholder="<tipo>,<x1>,<x2>,..."> <br/>
     <!--This is a comment.
      <input name="R1" value=""> <br/>
     <input name="R2" value=""> <br/>
@@ -47,26 +51,26 @@ SIMPLEXO
 </div>
 
 <div id = result>
-    <table id = "resultTable" >
+    <table id = "resultTable" class="tables" >
         <caption>Resultado</caption>
 
     </table>
 </div>
 
 <div id = status>
-    <table id = "statusTable" >
+    <table id = "statusTable" class="tables">
         <caption>status</caption>
 
     </table>
 </div>
 
 <div id = simplex>
-    <table id = "simplexTable" >
+    <table id = "simplexTable" class="tables" >
         <caption>Tabela Simplex</caption>
     </table>
 </div>
 <div id = sen>
-    <table id = "sensTable" >
+    <table id = "sensTable" class = "tables" >
         <caption>Sensibilidade</caption>
 
     </table>
