@@ -68,22 +68,23 @@ class Test(unittest.TestCase):
 
     def test_case_sens(self):
         #sensibilidade
-        """
+
         f = ["max", 40, 30]
         r1 = [2/5, 1/2, "<=", 20]
         r2 = [0, 1/5, "<=", 5]
         r3 = [3/5, 3/10, "<=", 21]
-
+        """
         f = ["max", 1, 1.5]
         r1 = [2, 2, "<=", 160]
         r2 = [1, 2, "<=", 120]
         r3 = [4, 2, "<=", 280]
-        """
+
 
         f = ["max", 80, 40]
         r1 = [6, 4, "<=", 2400]
         r2 = [2, 3, "<=", 1500]
         r3 = [9, 3, "<=", 2700]
+        """
         simplex = Simplex()
         table = [f,r1,r2,r3]
         simplex.reset()
@@ -123,7 +124,7 @@ class Test(unittest.TestCase):
 
         """
         simplex.print_table(result["table"])
-
+        print(result["sens"])
 
 
 

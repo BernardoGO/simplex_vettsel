@@ -238,7 +238,7 @@ class Simplex(object):
             minc1 = min(ttt)*(f[2]*-1)
             maxc2 = (f[1]*-1)/max(ttt)
             maxc1 = max(ttt)*(f[2]*-1)
-            sens = [[minc1, maxc1], [minc2, maxc2]]
+            sens = [sorted([minc1, maxc1]), sorted([minc2, maxc2])]
 
         #ANALISE DE SENSISIBILIDADEDE
         valores = []
@@ -248,9 +248,20 @@ class Simplex(object):
                 vals = (table[x][0]*-1)/table[x][1]
 
                 valores.append(vals)
+
+
+
+
+
+        minc2 = table[0][1]/min(valores)*-1
+        maxc2 = table[0][1]/max(valores)*-1
+        maxc1 = max(valores)*-1*table[0][2]
+        minc1 = min(valores)*-1*table[0][2]
+        sens = [sorted([minc1, maxc1]), sorted([minc2, maxc2])]
         #print(valores)
 
         #print(result["table"])
+        result["sens"] = sens
         return result
 
     def execute_simplex(self, stn):
