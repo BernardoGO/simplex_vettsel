@@ -65,7 +65,7 @@ class Test(unittest.TestCase):
                 [2, 20.00000000000001, -1.2499999999999998, 0.7499999999999999]]
 
         self.assertTrue(result['table'] == expected_result)
-
+    """
     def test_case_sens(self):
         #sensibilidade
 
@@ -125,7 +125,7 @@ class Test(unittest.TestCase):
         """
         simplex.print_table(result["table"])
         print(result["sens"])
-
+    """
 
 
 if __name__ == '__main__':
