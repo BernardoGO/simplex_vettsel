@@ -219,7 +219,7 @@ class Simplex(object):
         self.reset()
         global table
         result = self.execute_simplex(stn)
-        if result["status"] == Result.optimal:
+        if result["status"] == Result.optimal and 1==2:
 
             self.print_table(result["table"])
             x1 = result["table"][4][1]
@@ -248,6 +248,7 @@ class Simplex(object):
 
             sens = [[minc1, maxc1], [minc2, maxc2]]
             print(sens)
+        #print(result["table"])
         return result
 
     def execute_simplex(self, stn):
