@@ -24,6 +24,7 @@ def simplex():
 
     status = ""
     result = {}
+    result_arr = []
 
     if (simplex_result['status'] == Result.infeasible):
         status = "impossivel"
@@ -45,7 +46,10 @@ def simplex():
     elif (simplex_result['status'] == Result.multi):
         status = "multiplas"
 
-    return jsonify({ "data": { "status": status, "result": result, "table": simplex_result['table']} })
+    for key, value in result.items():
+        result_arr.append(value)
+
+    return jsonify({ "data": { "status": status, "result": result_arr, "table": simplex_result['table'], "sens": simplex_result['sens'] } })
 
 if __name__ == "__main__":
     app.run()
