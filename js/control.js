@@ -34,7 +34,7 @@ function control( ) {
 
 
     function sendData() {
-
+        //http://ec2-35-160-139-230.us-west-2.compute.amazonaws.com/
         //var formData = $('#login').serializeArray()
         //  .reduce(function(a, x) { a[x.name] = jQuery.parseJSON( x.value); return a; }, {});
         var $inputs = $('#tabela :input');
@@ -62,8 +62,17 @@ function control( ) {
                     //}));
                 //});
               myList = data;
+              addAllColumnHeaders ( '#resultTable', myList.data.result);
+
+              buildHtmlTable( '#resultTable', myList.data.result);
+
+              buildHtmlTable2( '#simplexTable', myList.data.table);
+
+              buildHtmlTable( '#statusTable', myList.data.status);
+
+              buildHtmlTable2( '#sensTable', myList.data.sens);
             },
-            dataType: "text",
+            dataType: "json",
             contentType : "application/json"
         });
     }
