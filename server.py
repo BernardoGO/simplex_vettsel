@@ -1,10 +1,10 @@
 
-from flask import Flask, request, jsonify, render_template
+from flask import Flask, request, jsonify, render_template, send_from_directory
 from simplex import Simplex, Result
 from json import dumps
 from flask import Flask, request
-app = Flask(__name__, static_url_path='')
-"""
+app = Flask(__name__)
+
 @app.route("/")
 def home():
     return "Simplex Vettsel"
@@ -17,6 +17,13 @@ def interface():
 @app.route('/')
 def root():
     return app.send_static_file('html.html')
+"""
+
+
+@app.route('/js/<path:path>')
+def send_js(path):
+    return send_from_directory('js', path)
+
 
 @app.route("/simplex", methods=['POST'])
 def simplex():
