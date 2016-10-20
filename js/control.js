@@ -71,6 +71,8 @@ function control( ) {
               buildHtmlTable( '#statusTable', myList.data.status);
 
               buildHtmlTable2( '#sensTable', myList.data.sens);
+              buildHtmlTable( '#sensTable', myList.data.sens);
+
             },
             dataType: "json",
             contentType : "application/json"
@@ -126,15 +128,15 @@ function control( ) {
     }
 
 
-    addAllColumnHeaders ( '#resultTable', myList.data.result);
+    //addAllColumnHeaders ( '#resultTable', myList.data.result);
 
-    buildHtmlTable( '#resultTable', myList.data.result);
+    //buildHtmlTable( '#resultTable', myList.data.result);
 
-    buildHtmlTable2( '#simplexTable', myList.data.table);
+    //buildHtmlTable2( '#simplexTable', myList.data.table);
 
-    buildHtmlTable( '#statusTable', myList.data.status);
+    //buildHtmlTable( '#statusTable', myList.data.status);
 
-    buildHtmlTable2( '#sensTable', myList.data.sens);
+    //buildHtmlTable2( '#sensTable', myList.data.sens);
 
     //buildHtmlTable( '#sensTable', myList.data.sens);
 
