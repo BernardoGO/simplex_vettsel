@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html>
+<head>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
+</head>
+<body>
+
+<div id="demo">
+<h1>The XMLHttpRequest Object</h1>
+<button type="button" onclick="loadDoc()">Change Content</button>
+
+<!--
+{
+  "data":[["min", 1, 2], [8, 2, ">=", 16], [1, 1, "<=", 6], [2, 7, ">=", 28]]
+}
+"{\"data\":[[\"min\", 1, 2], [8, 2, \">=\", 16], [1, 1, \"<=\", 6], [2, 7, \">=\", 28]]}",
+[[\"min\", 1, 2], [8, 2, \">=\", 16], [1, 1, \"<=\", 6], [2, 7, \">=\", 28]]
+[["min", 1, 2], [8, 2, ">=", 16], [1, 1, "<=", 6], [2, 7, ">=", 28]]
+-->
+<form id="login">
+    <input name="F" value=""> <br/>
+    <input name="R1" value=""> <br/>
+    <input name="R2" value=""> <br/>
+    <input name="R3" value=""> <br/>
+
+</form>
+<button type="button" onclick="serialize()">login</button>
+</div>
+
+<script>
+function loadDoc() {
+  //var formData = $('#login').serializeArray()
+  //  .reduce(function(a, x) { a[x.name] = jQuery.parseJSON( x.value); return a; }, {});
+
+  var $inputs = $('#login :input');
+
+
+
+  jsow = "{ \"data\" : [";
+  $inputs.each(function() {
+      jsow += $(this).val() ;
+  });
+  jsow = jsow.replace(/\]\[/g, "],[")
+  jsow += "] }";
+  //jsow = "{ \"data\" : " + $('#login.R1').attr('value') + "}"
+  $('body').append($('<div>', {
+      text: jsow
+  }));
+  var formData = jQuery.parseJSON(jsow);
+  $.ajax({
+    type: "POST",
+    url: "http://ec2-35-160-139-230.us-west-2.compute.amazonaws.com/simplex",
+    data: JSON.stringify(formData),
+    success: function (data) {
+        $.each(data, function(index, element) {
+            $('body').append($('<div>', {
+                text: element.name
+            }));
+        });
+    },
+    dataType: "text",
+    contentType : "application/json"
+  });
+}
+function serialize(){
+  var frm = $(document.body.login);
+  var formData = $('#login').serializeArray()
+    .reduce(function(a, x) { a[x.name] = x.value; return a; }, {});
+  $('body').append($('<div>', {
+      text: JSON.stringify(formData)
+  }));
+}
+</script>
+
+</body>
+</html>
