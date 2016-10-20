@@ -3,6 +3,8 @@ function control( ) {
 
     var json = '{ "data": { "result": [ 0, 3.6923076923076925, 1.076923076923077, 0, 1.2307692307692306 ], "sens": [ [ 0.5714285714285714, 8 ], [ 0.25, 3.5 ] ], "status": "otima", "table": [ [ "vnb", "ml", 5, 3 ], [ "f", 8.461538461538462, -0.2692307692307692, -0.05769230769230768 ], [ 2, 3.6923076923076925, -0.15384615384615385, 0.038461538461538464 ], [ 1, 1.076923076923077, 0.03846153846153846, -0.1346153846153846 ], [ 4, 1.2307692307692306, 0.11538461538461539, 0.09615384615384615 ] ] } }';
 
+  var myList = JSON.parse(json);
+
 
     $("#calcbutton").click(function(e) {
         e.preventDefault();
@@ -44,9 +46,9 @@ function control( ) {
         });
         jsow = jsow.replace(/\]\[/g, "],[");
         jsow += "] }";
-        //jsow = "{ \"data\" : " + $('#login.R1').attr('value') + "}"
+        //jsow = "{ \"data\" : " + $('campo[name=tcol1]').attr('value') + "}"
         $('body').append($('<div>', {
-            text: jsow
+           text: jsow
         }));
         var formData = jQuery.parseJSON(jsow);
         $.ajax({
@@ -54,11 +56,12 @@ function control( ) {
             url: "http://ec2-35-160-139-230.us-west-2.compute.amazonaws.com/simplex",
             data: JSON.stringify(formData),
             success: function (data) {
-                $.each(data, function(index, element) {
-                    $('body').append($('<div>', {
-                        text: element.name
-                    }));
-                });
+                //$.each(data, function(index, element) {
+                  //  $('body').append($('<div>', {
+                    //    text: element.name
+                    //}));
+                //});
+              myList = data;
             },
             dataType: "text",
             contentType : "application/json"
@@ -69,7 +72,7 @@ function control( ) {
 
 
 
-    var myList = JSON.parse(json);
+
 
     function buildHtmlTable(selector, data) {
 
