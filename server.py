@@ -2,15 +2,20 @@
 from flask import Flask, request, jsonify, render_template
 from simplex import Simplex, Result
 from json import dumps
-app._static_folder = os.path.abspath("static/")
-app = Flask(__name__)
-
+from flask import Flask, request
+app = Flask(__name__, static_url_path='')
+"""
 @app.route("/")
 def home():
     return "Simplex Vettsel"
 
 @app.route('/interface')
 def interface():
+    return app.send_static_file('html.html')
+"""
+
+@app.route('/')
+def root():
     return app.send_static_file('html.html')
 
 @app.route("/simplex", methods=['POST'])
