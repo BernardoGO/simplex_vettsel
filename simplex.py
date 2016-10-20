@@ -219,46 +219,30 @@ class Simplex(object):
         self.reset()
         global table
         result = self.execute_simplex(stn)
-        if result["status"] == Result.optimal and isinstance(result, bool):
-            self.print_table(result["table"])
-            x1 = result["table"][4][1]
-            x2 = result["table"][2][1]
-            res = result["table"][1][1]
-            perm1 = result["table"][0][-1]-len(table)+2
-            perm2 = result["table"][0][-2]-len(table)+2
-            ss1 = self.standardize_r(table[perm1])
-            tt1 = (ss1[1]/ss1[3])*-1
-            pp1 = (ss1[2]/ss1[3])*-1
-            ss2 = self.standardize_r(table[perm2])
-            tt2 = (ss2[1]/ss2[3])*-1
-            pp2 = (ss2[2]/ss2[3])*-1
-            f = table[0]
-            ttt = [pp2,pp1]
-            minc2 = (f[1]*-1)/min(ttt)
-            minc1 = min(ttt)*(f[2]*-1)
-            maxc2 = (f[1]*-1)/max(ttt)
-            maxc1 = max(ttt)*(f[2]*-1)
-            sens = [sorted([minc1, maxc1]), sorted([minc2, maxc2])]
-
+        sens = []
+        
         #ANALISE DE SENSISIBILIDADEDE
-        valores = []
-        for x in range(1,len(table)):
-            #print([item[0] for item in list(result["table"])])
-            if (x+2) not in [item[0] for item in list(result["table"])]:
-                vals = (table[x][0]*-1)/table[x][1]
+        try:
+            valores = []
+            for x in range(1,len(table)):
+                #print([item[0] for item in list(result["table"])])
+                if (x+2) not in [item[0] for item in list(result["table"])]:
+                    vals = (table[x][0]*-1)/table[x][1]
 
-                valores.append(vals)
-
-
-
+                    valores.append(vals)
 
 
-        minc2 = table[0][1]/min(valores)*-1
-        maxc2 = table[0][1]/max(valores)*-1
-        maxc1 = max(valores)*-1*table[0][2]
-        minc1 = min(valores)*-1*table[0][2]
-        sens = [sorted([minc1, maxc1]), sorted([minc2, maxc2])]
-        #print(valores)
+
+
+
+            minc2 = table[0][1]/min(valores)*-1
+            maxc2 = table[0][1]/max(valores)*-1
+            maxc1 = max(valores)*-1*table[0][2]
+            minc1 = min(valores)*-1*table[0][2]
+            sens = [sorted([minc1, maxc1]), sorted([minc2, maxc2])]
+            #print(valores)
+        except:
+            pass
 
         #print(result["table"])
         result["sens"] = sens
