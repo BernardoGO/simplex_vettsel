@@ -2,8 +2,8 @@
 from flask import Flask, request, jsonify, render_template
 from simplex import Simplex, Result
 from json import dumps
-
-app = Flask(__name__, static_url_path='')
+app._static_folder = os.path.abspath("static/")
+app = Flask(__name__)
 
 @app.route("/")
 def home():
