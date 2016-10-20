@@ -11,7 +11,7 @@ def home():
 
 @app.route('/interface')
 def interface():
-    return render_template('html.html')
+    return app.send_static_file('html.html')
 
 @app.route("/simplex", methods=['POST'])
 def simplex():
